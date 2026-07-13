@@ -1,0 +1,35 @@
+- name: Join VM to existing k3s cluster as worker (agent)
+  hosts: new_nodes
+  become: true
+
+  tasks:
+    - name: Check required variables are provided
+      assert:
+        that:
+          - k3s_url is defined
+          - k3s_token is defined
+        fail_msg: "Pass -e k3s_url=... -e k3s_token=... when running this playbook"
+
+    - name: Check if k3s-agent is already installed
+      stat:
+        path: /usr/local/bin/k3s
+      register: k3s_installed
+
+    - name: Download and install k3s agent, joining it to the master
+      shell: |
+        curl -sfL https://get.k3s.io | \
+        K3S_URL="{{ k3s_url }}" \
+        K3S_TOKEN="{{ k3s_token }}" \
+        sh -
+      when: not k3s_installed.stat.exists
+      register: k3s_install_result
+
+    - name: Make sure k3s-agent service is running and enabled
+      systemd:
+        name: k3s-agent
+        state: started
+        enabled: true
+
+    - name: Show install result (if it ran)
+      debug:
+        msg: "{{ k3s_install_result.stdout_lines | default('k3s was already installed, nothing to do') }}"
