@@ -70,6 +70,7 @@ vm_hostname = "<VM_HOSTNAME>"
 target_node = "<A_PROXMOX_CLUSTER_NODE>"
 template_node = "<PROXMOX_NODE_HOSTING_THE_TEMPLATE>"
 template_id = <TEMPLATE_VM_ID>
+vm_disk_size = <DISK_SIZE>
 ```
 
 > **Note**
