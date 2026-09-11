@@ -12,6 +12,12 @@ resource "proxmox_virtual_environment_vm" "k3s-worker" {
     node_name = var.template_node
   }
 
+  disk {
+    interface = "scsi0"
+    size      = var.vm_disk_size
+  }
+
+
   cpu {
     cores = var.vm_cpu_cores
   }
