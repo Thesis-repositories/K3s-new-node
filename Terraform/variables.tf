@@ -44,6 +44,11 @@ variable "vm_cpu_cores" {
   default = 2
 }
 
+variable "vm_disk_size" {
+  type    = number
+  default = 100
+}
+
 variable "vm_memory" {
   type    = number
   default = 2048
